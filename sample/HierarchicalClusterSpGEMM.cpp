@@ -42,6 +42,7 @@ using item_t = pair<VALUETYPE, pair<INDEXTYPE, INDEXTYPE>>;
 auto cmp = [](const item_t &a, const item_t &b){ return a.first < b.first; };
 priority_queue<item_t, vector<item_t>, decltype(cmp)> sims(cmp);
 
+// EVOLVE-BLOCK-START
 static map<INDEXTYPE, vector<INDEXTYPE>> hierachical_clustering_v0(CSR<INDEXTYPE, VALUETYPE> &sp,
                                                        map<pair<INDEXTYPE, INDEXTYPE>, VALUETYPE> &close_pairs,
                                                        int cluster_size) {
@@ -121,6 +122,7 @@ static map<INDEXTYPE, vector<INDEXTYPE>> hierachical_clustering_v0(CSR<INDEXTYPE
 
   return reordered_dict;
 }
+// EVOLVE-BLOCK-END
 
 int main(int argc, char *argv[]) {
   INDEXTYPE cluster_size = 8;
@@ -177,6 +179,14 @@ int main(int argc, char *argv[]) {
   // set the highest number of allowed concurrent threads to run clustering/reordering algorithm
   omp_set_num_threads(tnums[tnums.size() - 1]);
   map<INDEXTYPE, vector<INDEXTYPE>> clusters = hierachical_clustering_v0(A_csr, close_pairs, cluster_size);
+
+  // Print clustering stats (deterministic metrics for evaluation)
+  cout << "# of clusters: " << clusters.size() << endl;
+  INDEXTYPE hier_max_cs = 0;
+  for (auto& kv : clusters) {
+    hier_max_cs = max(hier_max_cs, (INDEXTYPE)kv.second.size());
+  }
+  cout << "max_cluster_size for SpGEMM: " << hier_max_cs << endl;
 
   // create A_csr_vlength_cluster from A_csr and reconstructed_clusters
   CSR_VlengthCluster<INDEXTYPE, VALUETYPE> A_csr_vlength_cluster(A_csr, clusters);

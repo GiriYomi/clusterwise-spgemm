@@ -75,6 +75,7 @@ int main(int argc, char *argv[]) {
 
   double start, end, msec, ave_msec, mflops;
 
+  // EVOLVE-BLOCK-START
   // construct clusters
   vector<INDEXTYPE> offset;
   INDEXTYPE curr_off = 0;
@@ -94,6 +95,7 @@ int main(int argc, char *argv[]) {
     offset.push_back(next_off);
     curr_off = next_off;
   }
+  // EVOLVE-BLOCK-END
 
   cout << "# of clusters: " << offset.size() << endl;
   cout << "max_cluster_size for SpGEMM: " << real_max_cluster_size << endl;

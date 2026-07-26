@@ -354,3 +354,20 @@ MigrationBackup/
 .ionide/
 .idea/
 *.pdf
+# ===== Cluster-wise SpGEMM: build artifacts =====
+GTgraph/**/*.o
+GTgraph/**/*.a
+GTgraph/R-MAT/GTgraph-rmat
+
+# ===== Datasets & generated inputs (large, machine-local) =====
+data/
+testdata/
+results/
+
+# ===== OpenEvolve outputs & machine-specific caches =====
+evolve_runs/
+test_evolve_*/
+baseline_timings.json
+fingerprint_cache.json
+evolve_runs.zip
+*.log
